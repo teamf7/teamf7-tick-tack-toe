@@ -10,15 +10,12 @@ import game.Player;
  * Created by designAi on 15.10.2016.
  */
 public class WinnerCheckerVertical implements WinnerCheckerInterface{
-    GameField board;
-    int n = 0;
+    private GameField board;
+    private int winnerCount = 0;
 
-    public WinnerCheckerVertical(GameField gameField){
+    public WinnerCheckerVertical(GameField gameField,int winnerCount){
         this.board = gameField;
-    }
-    public WinnerCheckerVertical(GameField gameField,int n){
-        this.board = gameField;
-        this.n = n;
+        this.winnerCount = winnerCount;
     }
 
     @Override
@@ -32,7 +29,7 @@ public class WinnerCheckerVertical implements WinnerCheckerInterface{
                 currentPlayer = board.getValue(j, i);
                 if(currentPlayer == lastPlayer && (currentPlayer !=null && lastPlayer !=null)){
                     successCounter++;
-                    if(successCounter == len2||(n != 0&& n ==successCounter)){
+                    if(successCounter == len2||(winnerCount != 0&& winnerCount ==successCounter)){
                         return currentPlayer;
                     }
                 }lastPlayer = currentPlayer;

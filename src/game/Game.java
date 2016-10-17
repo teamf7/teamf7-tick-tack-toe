@@ -43,7 +43,6 @@ public abstract class Game implements IGame {
 
     public boolean makeStep(Step step) throws GameException {
         if(started != true) return false;
-
         history.add(step);
         gameField.setValue(step);
         switchPlayers();

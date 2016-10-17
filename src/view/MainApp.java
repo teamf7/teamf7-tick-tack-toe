@@ -24,7 +24,7 @@ import java.util.List;
 public class MainApp extends Application implements EventHandler<ActionEvent> {
     private Label label;
     private Stage primaryStage;
-    private Connect6 game = new Connect6();
+    private IGame game = new Connect6();
     private Button[][] buttons =new Button[15][15];
     @Override
     public void start(Stage primaryStage) {

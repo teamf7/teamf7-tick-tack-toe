@@ -7,12 +7,12 @@ import game.Player;
  * Created by designAi on 15.10.2016.
  */
 public class WinnerCheckerDiagonalTopLeft implements WinnerCheckerInterface {
-    GameField gameField;
-    int n;
+    private GameField gameField;
+    private int winnerCount;
 
-    public WinnerCheckerDiagonalTopLeft(GameField gameField, int n) {
+    public WinnerCheckerDiagonalTopLeft(GameField gameField, int winnerCount) {
         this.gameField = gameField;
-        this.n = n;
+        this.winnerCount = winnerCount;
     }
 
 
@@ -31,7 +31,7 @@ public class WinnerCheckerDiagonalTopLeft implements WinnerCheckerInterface {
                 currentPlayer = gameField.getValue(x, y);
                 if (currentPlayer == lastPlayer && (currentPlayer != null && lastPlayer != null)) {
                     successCounter++;
-                    if (n == successCounter) {
+                    if (winnerCount == successCounter) {
                         return currentPlayer;
                     }
                 }lastPlayer = currentPlayer;

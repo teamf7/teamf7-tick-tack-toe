@@ -2,11 +2,6 @@ package game;
 
 import exception.GameException;
 import exception.GameOverException;
-import game.Game;
-import game.Player;
-import game.Step;
-
-
 
 public abstract class TwoPlayersGame extends Game {
     private Player players[];

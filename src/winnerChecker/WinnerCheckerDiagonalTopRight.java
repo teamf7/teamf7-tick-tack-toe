@@ -8,11 +8,11 @@ import game.Player;
  */
 public class WinnerCheckerDiagonalTopRight implements WinnerCheckerInterface {
     private GameField gameField;
-    private int n;
+    private int winnerCount;
 
-    public WinnerCheckerDiagonalTopRight(GameField gameField, int n) {
+    public WinnerCheckerDiagonalTopRight(GameField gameField, int winnerCount) {
         this.gameField = gameField;
-        this.n = n;
+        this.winnerCount = winnerCount;
     }
     @Override
     public Player checkWinner() {
@@ -25,7 +25,7 @@ public class WinnerCheckerDiagonalTopRight implements WinnerCheckerInterface {
                 currentPlayer = gameField.getValue(i,i+k);
                 if (currentPlayer == lastPlayer && (currentPlayer != null && lastPlayer != null)) {
                     successCounter++;
-                    if (n == successCounter) {
+                    if (winnerCount == successCounter) {
                         return currentPlayer;
                     }
                 }lastPlayer = currentPlayer;
