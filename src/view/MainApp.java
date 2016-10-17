@@ -44,7 +44,7 @@ public class MainApp extends Application implements EventHandler<ActionEvent> {
     public void initRootLayout() {
 
         AnchorPane root = new AnchorPane();
-        label = new Label("Игру выйграл: ");
+        label = new Label("Игру выиграл: ");
         Button button = new Button("Отменить");
         button.setOnAction(this);
         GridPane layout = buildGameField();
@@ -141,7 +141,7 @@ public class MainApp extends Application implements EventHandler<ActionEvent> {
      public void getWinner() throws GameException {
             Player player = game.checkWinner();
             if(player != null){
-                gameOver("Игру выйграл: "+player.getName());
+                gameOver("Игру выиграл: "+player.getName());
                 game.undoStep(game.getHistory().size());
                 refresh();
                 game.start();
