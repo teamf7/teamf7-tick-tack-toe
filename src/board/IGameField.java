@@ -10,7 +10,7 @@ import game.Step;
 public interface IGameField {
     public int getN();
     public void setValue(Step step) throws GameNotSetValueException;
-    public Player getValue(int x, int y);
+    public int getValue(int x, int y);
     public boolean isFileldFilled();
     public int getFileld();
 }

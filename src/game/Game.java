@@ -1,7 +1,6 @@
 package game;
 
 import board.GameField;
-import board.Square;
 import exception.GameException;
 import exception.GameOverException;
 import winnerChecker.*;
@@ -13,32 +12,21 @@ import java.util.List;
 /**
  * Created by admin on 16.10.2016.
  */
-public abstract class Game implements IGame {
+public abstract class Game implements IGame, DisplayElement, ITwoPlayersGame {
     private GameField gameField;
-    private List history;
+    private List<Step> history;
     private List<WinnerCheckerInterface> winnerCheckers;
     private boolean started;
 
     public Game(int n){
         gameField = new GameField(n);
         history = new LinkedList<>();
-        initialization(0);
-    }
-    public Game(int n, int successFilled){
-        gameField = new GameField(n);
-        history = new LinkedList<>();
-        initialization(successFilled);
+        initialization();
     }
 
-
-
-    public void initialization(int successFilled) {
+    public void initialization() {
         started = false;
         winnerCheckers = new ArrayList<WinnerCheckerInterface>();
-            winnerCheckers.add(new WinnerCheckerHorizontal(gameField,successFilled));
-            winnerCheckers.add(new WinnerCheckerVertical(gameField, successFilled));
-            winnerCheckers.add(new WinnerCheckerDiagonalLeft(gameField, successFilled));
-            winnerCheckers.add(new WinnerCheckerDiagonalRight(gameField, successFilled));
     }
 
     public boolean makeStep(Step step) throws GameException {
@@ -54,29 +42,17 @@ public abstract class Game implements IGame {
         return history;
     }
 
-    public void print(){
-        Square[][] gameFields = gameField.getFields();
-        char view;
-        for(int i = 0,len = gameField.getN();i< len; i++){
-            for (int l =0; l< len; l++){
-                System.out.print("___");
-            } System.out.println();
-            for(int j = 0; j< len; j++){
-                if(gameFields[i][j].getPlayer() == null) view = ' ';
-                else view =  definePlayer(gameFields[i][j].getPlayer())? 'X' : 'O';
-                System.out.print(view + "| ");
-            } System.out.println();
-        }
-    }
 
     @Override
     public void getWinner() throws GameException {
-        Player player = checkWinner();
-        if(player != null){
+        int player = checkWinner();
+        if(player != 0){
             gameOver(player);
+            started = false;
         }
         if(isFileldFilled()){
             gameOver();
+            started = false;
         }
     }
 
@@ -84,18 +60,18 @@ public abstract class Game implements IGame {
         resetPlayers();
         started = true;
     }
-
-    public Player checkWinner(){
+    @Override
+    public final int checkWinner(){
         for(WinnerCheckerInterface winCheck: winnerCheckers){
-            Player winner = winCheck.checkWinner();
-            if(winner != null){
+            int winner = winCheck.checkWinner();
+            if(winner != 0){
                 return winner;
             }
         }
-        return null;
+        return 0;
     }
 
-    public List getWinnerCheckers(){
+    public List<WinnerCheckerInterface> getWinnerCheckers(){
         return winnerCheckers;
     }
     public GameField getGameField(){
@@ -106,20 +82,23 @@ public abstract class Game implements IGame {
         if(k > gameField.getFileld()) return false;
         for (int i=history.size()-1, len = history.size()- k-1; i > len; i--){
             Step step = (Step) history.get(i);
-            gameField.cleanPlayer(step.getX(), step.getY());
+            gameField.cleanField(step.getX(), step.getY());
             switchPlayers();
             history.remove(i);
         }
         return true;
     }
-    public Player getPrevPlayer(){
+    public int getPrevPlayer(){
         int size = gameField.getFileld();
-        if(size == 0) return null;
-        return ((Step)history.get(size-1)).getPlayer();
+        if(size == 0) return 0;
+        return history.get(size-1).getField();
     }
 
     public boolean isFileldFilled() {
         return gameField.isFileldFilled();
+    }
+    public void print(){
+        gameField.print();
     }
 }
 

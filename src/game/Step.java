@@ -5,7 +5,7 @@ package game;
  */
 public class Step {
     private int x,y;
-    private Player player = null;
+    private int field = 0;
 
     public Step(int x, int y){
         this.x = x;
@@ -20,22 +20,22 @@ public class Step {
         return y;
     }
 
-    public Player getPlayer() {
-        return player;
+    public int getField() {//ge t the value of a field
+        return field;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setField(int field) {
+        this.field = field;
     }
 
     public String toString(){
-        return "X: "+x + " Y: " +y+ " Player: "+ player;
+        return "X: "+x + " Y: " +y+ " Field: "+ field;
     }
 
     public boolean equals(Object other)
     {
         if (x == ((Step) other).getX() && y ==((Step) other).getY()) return true;
-        return this.player == ((Step) other).getPlayer();
+        return this.field == ((Step) other).getField();
     }
     public int hashCode()
     {

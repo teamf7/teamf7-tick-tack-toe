@@ -16,15 +16,15 @@ public class WinnerCheckerDiagonalBottomRight implements  WinnerCheckerInterface
     };
 
     @Override
-    public Player checkWinner() {
-        Player currentPlayer;
-        Player lastPlayer = null;
+    public int checkWinner() {
+        int currentPlayer;
+        int lastPlayer = 0;
         for(int k = gameField.getN()-1; k > 0; k--){
-            lastPlayer = null;
+            lastPlayer = 0;
             int successCounter = 1;
             for (int i = 0; i < gameField.getN()-k; i++){
                 currentPlayer = gameField.getValue(i,i+k);
-                if (currentPlayer == lastPlayer && (currentPlayer != null && lastPlayer != null)) {
+                if (currentPlayer == lastPlayer && (currentPlayer != 0 && lastPlayer != 0)) {
                     successCounter++;
                     if (winnerCount == successCounter) {
                         return currentPlayer;
@@ -32,7 +32,7 @@ public class WinnerCheckerDiagonalBottomRight implements  WinnerCheckerInterface
                 }lastPlayer = currentPlayer;
             }
         }
-        return null;
+        return 0;
     }
 
 }

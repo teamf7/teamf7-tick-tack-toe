@@ -17,18 +17,18 @@ public class WinnerCheckerDiagonalBottomLeft implements WinnerCheckerInterface {
 
 
     @Override
-    public Player checkWinner() {
-        Player currentPlayer;
-        Player lastPlayer = null;
+    public int checkWinner() {
+        int currentPlayer;
+        int lastPlayer = 0;
         int x,y;
         for(int k = 1; k < gameField.getN(); k++) {
             x = gameField.getN()-1;
             y = k;
-            lastPlayer = null;
+            lastPlayer = 0;
             int successCounter = 1;
             while (y < gameField.getN()){
                 currentPlayer = gameField.getValue(x, y);
-                if (currentPlayer == lastPlayer && (currentPlayer != null && lastPlayer != null)) {
+                if (currentPlayer == lastPlayer && (currentPlayer != 0 && lastPlayer != 0)) {
                     successCounter++;
                     if (winnerCount == successCounter) {
                         return currentPlayer;
@@ -37,7 +37,7 @@ public class WinnerCheckerDiagonalBottomLeft implements WinnerCheckerInterface {
                 x--;
                 y++;
             }
-        } return null;
+        } return 0;
     }
 
 }

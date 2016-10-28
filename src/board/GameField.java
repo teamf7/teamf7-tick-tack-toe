@@ -1,15 +1,15 @@
 package board;
 
 import exception.GameNotSetValueException;
-import game.Player;
 import game.Step;
 
 /**
  * Created by admin on 16.10.2016.
+ *
  */
 public class GameField  implements IGameField{
     private int n;
-    private Square[][] fields;
+    private int fields[][];
     private int filled = 0,
             squareCount=0;
 
@@ -19,13 +19,8 @@ public class GameField  implements IGameField{
     }
 
     private void initialization() {
-        fields = new Square[n][n];
-        for (int i =0; i < n; i++){
-            for (int j = 0;j < n; j++){
-                fields[i][j] = new Square();
-                squareCount++;
-            }
-        }
+        fields = new int[n][n];
+        squareCount= n*n;
     }
 
     @Override
@@ -37,19 +32,18 @@ public class GameField  implements IGameField{
     public void setValue(Step step) throws GameNotSetValueException{
         int x = step.getX(),
             y = step.getY();
-        if(fields[x][y].isFilled()) throw  new  GameNotSetValueException();
-        fields[x][y].fill(step.getPlayer());
+        if(fields[x][y] != 0) throw  new  GameNotSetValueException();
+        fields[x][y] = step.getField();
         filled++;
-
     }
 
-    public Square[][] getFields(){
+    public int[][] getFields(){
        return fields;
     }
 
     @Override
-    public Player getValue(int x, int y) {
-        return fields[x][y].getPlayer();
+    public int getValue(int x, int y) {
+        return fields[x][y];
     }
 
     @Override
@@ -62,16 +56,35 @@ public class GameField  implements IGameField{
         return filled;
     }
 
-    public void cleanPlayer(int x, int y){
+    public void cleanField(int x, int y){
         filled--;
-        fields[x][y].fill(null);
+        fields[x][y] = 0;
     }
 
     public void resetBoard() {
         for(int i = 0, len = fields.length; i < len; i++){
             for(int j = 0, len2 = fields[0].length; j < len2; j++){
-                cleanPlayer(i,j);
+                cleanField(i,j);
             }
         }
     }
+
+    public void print(){
+        char view;
+        for(int i = 0, len = n; i < len; i++){
+            for (int l =0; l < len; l++){
+                System.out.print("___");
+            } System.out.println();
+            for(int j = 0; j< len; j++){
+                if(fields[i][j] == 0) view = ' ';
+                else view = getaChar(i, j);
+                System.out.print(view + "| ");
+            } System.out.println();
+        }
+    }
+
+    private char getaChar(int i, int j) {
+        return fields[i][j] == 1 ? 'X' : 'O';
+    }
+
 }

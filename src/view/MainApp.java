@@ -22,7 +22,16 @@ import java.util.List;
 
 
 public class MainApp extends Application implements EventHandler<ActionEvent> {
-    private Label label;
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+    }
+
+    @Override
+    public void handle(ActionEvent event) {
+
+    }
+/*    private Label label;
     private Stage primaryStage;
     private IGame game = new Connect6();
     private Button[][] buttons =new Button[15][15];
@@ -38,9 +47,7 @@ public class MainApp extends Application implements EventHandler<ActionEvent> {
         initRootLayout();
     }
 
-    /**
-     * Инициализирует корневой макет.
-     */
+
     public void initRootLayout() {
 
         AnchorPane root = new AnchorPane();
@@ -99,14 +106,19 @@ public class MainApp extends Application implements EventHandler<ActionEvent> {
     public void handle(ActionEvent event) {
         List gameHistory = game.getHistory();
         int n = gameHistory.size();
-        Step step =(Step) gameHistory.get(n-1);
-        System.out.println(step);
-        try {
-            if(game.undoStep(1)){
-                buttons[step.getX()][step.getY()].setText(" ");
+        try{
+            Step step = (Step) gameHistory.get(n - 1);
+
+            System.out.println(step);
+            try {
+                if (game.undoStep(1)) {
+                    buttons[step.getX()][step.getY()].setText(" ");
+                }
+            } catch (GameOverException e) {
+                label.toString();
             }
-        }catch (GameOverException e){
-            label.toString();
+        }catch (IndexOutOfBoundsException ex){
+
         }
 
     }
@@ -165,6 +177,6 @@ public class MainApp extends Application implements EventHandler<ActionEvent> {
     public void gameOver(String gameOver){
         System.out.println("");
         label.setText(gameOver);
-    }
+    }*/
 
 }
