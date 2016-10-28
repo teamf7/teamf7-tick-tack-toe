@@ -19,7 +19,9 @@ public abstract class TwoPlayersGame extends Game{
         playerId[0] = -1;
         playerId[1] = 1;
     }
-
+    public void start() throws GameException {
+        resetPlayers();
+    }
     public int getCurrentActivePlayer(){
         return activePlayer;
     }
@@ -41,18 +43,17 @@ public abstract class TwoPlayersGame extends Game{
         setCurrentActivePlayer((activePlayer == playerId[0]) ? playerId[1] : playerId[0]);
     }
 
-    @Override
     public void gameOver(int playerId) {
         System.out.println("Игру выйграл "+getWinnerName(playerId));
     }
+
     public String getWinnerName(int playerId){
         Player player = playerId == -1 ? players[0] : players[1];
         return player.getName();
     }
 
-    @Override
-    public String gameOver() {
-        return "Ничья";
+    public void gameOver() {
+        System.out.println("Ничья");
     }
 
     private void setCurrentActivePlayer(int player) throws GameOverException {
@@ -60,7 +61,4 @@ public abstract class TwoPlayersGame extends Game{
         activePlayer = player;
     }
 
-    public boolean definePlayer(Player player) {
-      return players[0] == player;
-    }
 }

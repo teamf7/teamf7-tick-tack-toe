@@ -1,14 +1,11 @@
 package test;
 
 import exception.GameException;
-import game.DisplayElement;
-import game.IGame;
-import game.Step;
-import game.TwoPlayersGame;
+import exception.GameOverException;
+import exception.GameUndoStepException;
+import game.*;
 import games.TicTacToe;
-import org.junit.Assert;
 import org.junit.Test;
-import org.junit.Assert.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -18,38 +15,38 @@ import static org.junit.Assert.assertFalse;
  * Created by admin on 16.10.2016.
  */
 public class TicTacToeTest {
-    IGame twoPlayersGame;
+    IGame game;
     public TicTacToeTest(){
-        twoPlayersGame = new TicTacToe();
+        game = new TicTacToe();
     }
 
-    @Test
-    public void createTwoGame() throws GameException{
-        System.out.println("Create two game");
+    @Test(expected = GameOverException.class)
+    public void createGameAndMakeErrorStepTest() throws GameException{
+        System.out.println("Create game");
 
-        twoPlayersGame.start();
-        twoPlayersGame.makeStep(new Step(0,2));
-        twoPlayersGame.makeStep(new Step(0,1));
-        twoPlayersGame.makeStep(new Step(0,0));
-        twoPlayersGame.makeStep(new Step(1,0));
-        twoPlayersGame.makeStep(new Step(1,1));
-        twoPlayersGame.makeStep(new Step(1,2));
-        twoPlayersGame.makeStep(new Step(2,0));
-        ((DisplayElement)twoPlayersGame).print();
+        game.start();
+        game.makeStep(new Step(0,2));
+        game.makeStep(new Step(0,1));
+        game.makeStep(new Step(0,0));
+        game.makeStep(new Step(1,0));
+        game.makeStep(new Step(1,1));
+        game.makeStep(new Step(1,2));
+        game.makeStep(new Step(2,0));
+        ((DisplayElement) game).print();
         System.out.println("-------------------------");
-        twoPlayersGame.makeStep(new Step(0,2));
+        game.makeStep(new Step(0,2));
 
     }
     @Test
-    public void getCurrentActivePlayer() throws GameException {
-        twoPlayersGame.start();
-        twoPlayersGame.makeStep(new Step(0,1));
-        ((DisplayElement)twoPlayersGame).print();
-        int player1= twoPlayersGame.getCurrentActivePlayer();
+    public void getCurrentActivePlayerTest() throws GameException {
+        game.start();
+        game.makeStep(new Step(0,1));
+        ((DisplayElement) game).print();
+        int player1= ((ITwoPlayersGame) game).getCurrentActivePlayer();
         assertTrue(player1 == 1);
     }
     @Test
-    public void getPrevPlayer() throws GameException {
+    public void getPrevPlayerTest() throws GameException {
         TicTacToe ticTacToe = new TicTacToe();
         ticTacToe.start();
         ticTacToe.makeStep(new Step(1,2));
@@ -58,15 +55,16 @@ public class TicTacToeTest {
         assertTrue(1 == prevPlayer);
     }
     @Test
-    public void isFileldFilled() throws GameException {
+    public void isFileldFilledTest() throws GameException {
         TicTacToe ticTacToe = new TicTacToe();
         ticTacToe.start();
         ticTacToe.makeStep(new Step(1,2));
         ticTacToe.makeStep(new Step(2,2));
-        assertFalse(ticTacToe.isFileldFilled());
+        assertFalse(ticTacToe.isFieldFilled());
     }
-    @Test
-    public void undoStep() throws GameException {
+    @Test(expected = GameUndoStepException.class)
+    public void undoStepTest() throws GameException {
+        System.out.println("UndoStepTest");
         TicTacToe ticTacToe = new TicTacToe();
         ticTacToe.start();
         ticTacToe.makeStep(new Step(1,2));
@@ -74,9 +72,12 @@ public class TicTacToeTest {
         assertTrue(ticTacToe.undoStep(1));
         assertTrue(ticTacToe.undoStep(1));
         assertFalse(ticTacToe.undoStep(1));
+        System.out.println("End undoStep");
     }
+
     @Test(expected = GameException.class)
-    public void makeStepError() throws GameException {
+    public void makeStepErrorTest() throws GameException {
+        System.out.println("makeStepErrorTest");
         TicTacToe ticTacToe = new TicTacToe();
         ticTacToe.start();
         ticTacToe.makeStep(new Step(1,2));
@@ -84,5 +85,19 @@ public class TicTacToeTest {
         ticTacToe.makeStep(new Step(2,2));
         ticTacToe.makeStep(new Step(2,2));
     }
-
+    @Test
+    public void gameOverTest() throws GameException {
+        System.out.println("gameOverTest - ничья");
+        TicTacToe ticTacToe = new TicTacToe();
+        ticTacToe.start();
+        ticTacToe.makeStep(new Step(0,0));
+        ticTacToe.makeStep(new Step(0,1));
+        ticTacToe.makeStep(new Step(0,2));
+        ticTacToe.makeStep(new Step(1,1));
+        ticTacToe.makeStep(new Step(1,0));
+        ticTacToe.makeStep(new Step(1,2));
+        ticTacToe.makeStep(new Step(2,1));
+        ticTacToe.makeStep(new Step(2,0));
+        ticTacToe.makeStep(new Step(2,2));
+    }
 }

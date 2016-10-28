@@ -18,13 +18,6 @@ public class TicTacToe extends TwoPlayersGame{
         super(3);
     }
 
-
-
-
-    public void gameOver(String gameOver){
-        System.out.println(gameOver);
-    }
-
     @Override
     public void initialization(){
         super.initialization();

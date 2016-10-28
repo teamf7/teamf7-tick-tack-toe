@@ -1,13 +1,13 @@
 package board;
 
-import exception.GameNotSetValueException;
+import exception.GameNotSetStepException;
 import game.Step;
 
 /**
  * Created by admin on 16.10.2016.
  *
  */
-public class GameField  implements IGameField{
+public class GameField  implements IGameField, Cloneable{
     private int n;
     private int fields[][];
     private int filled = 0,
@@ -29,10 +29,10 @@ public class GameField  implements IGameField{
     }
 
     @Override
-    public void setValue(Step step) throws GameNotSetValueException{
+    public void setStep(Step step) throws GameNotSetStepException {
         int x = step.getX(),
             y = step.getY();
-        if(fields[x][y] != 0) throw  new  GameNotSetValueException();
+        if(fields[x][y] != 0) throw  new GameNotSetStepException();
         fields[x][y] = step.getField();
         filled++;
     }
@@ -57,7 +57,7 @@ public class GameField  implements IGameField{
     }
 
     public void cleanField(int x, int y){
-        filled--;
+        filled=0;
         fields[x][y] = 0;
     }
 
@@ -87,4 +87,15 @@ public class GameField  implements IGameField{
         return fields[i][j] == 1 ? 'X' : 'O';
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = n;
+        int result = 1;
+        for(int i = 0; i < n;i++){
+            for (int j = 0; j< n; j++){
+                result = prime * result + getValue(i,j);
+            }
+        }
+        return result;
+    }
 }

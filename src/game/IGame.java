@@ -1,7 +1,9 @@
 package game;
 
 import exception.GameException;
+import exception.GameNotSetStepException;
 import exception.GameOverException;
+import exception.GameUndoStepException;
 
 import java.util.List;
 
@@ -11,22 +13,11 @@ import java.util.List;
 public interface IGame {
     public void start() throws GameException;
 
-    public void getWinner() throws GameException;
-
-    public void gameOver(int player);
-
-    public String gameOver();
-
-    public void initialization();
-
-    public boolean undoStep(int n) throws GameOverException;
+    public boolean undoStep(int n) throws GameOverException, GameNotSetStepException, GameUndoStepException;
 
     public List getHistory();
 
-    public int getCurrentActivePlayer();
-
     public boolean makeStep(Step step) throws GameException;
 
-    public int checkWinner();
 
 }

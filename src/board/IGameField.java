@@ -1,7 +1,6 @@
 package board;
 
-import exception.GameNotSetValueException;
-import game.Player;
+import exception.GameNotSetStepException;
 import game.Step;
 
 /**
@@ -9,7 +8,7 @@ import game.Step;
  */
 public interface IGameField {
     public int getN();
-    public void setValue(Step step) throws GameNotSetValueException;
+    public void setStep(Step step) throws GameNotSetStepException;
     public int getValue(int x, int y);
     public boolean isFileldFilled();
     public int getFileld();

@@ -2,12 +2,8 @@ package games;
 
 import exception.GameException;
 import exception.GameOverException;
-import game.Step;
 import game.TwoPlayersGame;
 import winnerChecker.*;
-
-import java.util.Random;
-
 
 /**
  * Created by admin on 16.10.2016.
@@ -30,13 +26,13 @@ public class Connect6 extends TwoPlayersGame{
 
     @Override
     public void switchPlayers()  throws GameOverException {
-        if(stepPlayer==0){
+        if(stepPlayer == 0){
             super.switchPlayers();
         }
         stepPlayer++;
-        if(stepPlayer==3){
+        if(stepPlayer == 3){
             super.switchPlayers();
-            stepPlayer=1;
+            stepPlayer = 1;
         }
     }
     @Override

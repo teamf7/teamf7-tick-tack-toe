@@ -2,7 +2,9 @@ package game;
 
 import board.GameField;
 import exception.GameException;
+import exception.GameNotSetStepException;
 import exception.GameOverException;
+import exception.GameUndoStepException;
 import winnerChecker.*;
 
 import java.util.ArrayList;
@@ -12,30 +14,38 @@ import java.util.List;
 /**
  * Created by admin on 16.10.2016.
  */
-public abstract class Game implements IGame, DisplayElement, ITwoPlayersGame {
+public abstract class Game implements IGame, DisplayElement, ITwoPlayersGame, IGameEnd {
     private GameField gameField;
-    private List<Step> history;
+    private LinkedList<Step> history;
     private List<WinnerCheckerInterface> winnerCheckers;
-    private boolean started;
+    private boolean finished;
 
     public Game(int n){
         gameField = new GameField(n);
         history = new LinkedList<>();
+        finished = false;
         initialization();
     }
 
     public void initialization() {
-        started = false;
         winnerCheckers = new ArrayList<WinnerCheckerInterface>();
     }
 
     public boolean makeStep(Step step) throws GameException {
-        if(started != true) return false;
-        history.add(step);
-        gameField.setValue(step);
-        switchPlayers();
-        getWinner();
+        hasStarted();
+            addStep(step);
+            switchPlayers();
+            getWinner();
         return true;
+    }
+
+    private boolean hasStarted() throws GameOverException{
+        if(finished) throw new GameOverException("Игра Закончена");
+        return true;
+    }
+    private void addStep(Step s) throws GameNotSetStepException {
+        history.add(s);
+        gameField.setStep(s);
     }
 
     public List getHistory(){
@@ -48,19 +58,14 @@ public abstract class Game implements IGame, DisplayElement, ITwoPlayersGame {
         int player = checkWinner();
         if(player != 0){
             gameOver(player);
-            started = false;
+            finished = true;
         }
-        if(isFileldFilled()){
+        if(isFieldFilled()){
             gameOver();
-            started = false;
+            finished = true;
         }
     }
 
-    public void start() throws GameException {
-        resetPlayers();
-        started = true;
-    }
-    @Override
     public final int checkWinner(){
         for(WinnerCheckerInterface winCheck: winnerCheckers){
             int winner = winCheck.checkWinner();
@@ -78,23 +83,41 @@ public abstract class Game implements IGame, DisplayElement, ITwoPlayersGame {
         return gameField;
     }
 
-    public boolean undoStep(int k) throws GameOverException{
-        if(k > gameField.getFileld()) return false;
-        for (int i=history.size()-1, len = history.size()- k-1; i > len; i--){
-            Step step = (Step) history.get(i);
-            gameField.cleanField(step.getX(), step.getY());
-            switchPlayers();
-            history.remove(i);
-        }
+    @Override
+    public boolean undoStep(int k) throws GameOverException, GameNotSetStepException, GameUndoStepException {
+        hasRemoveNextStep(k);
+            resetFields();
+            removeLastHistory(k);
+            for(int i = 0, len = history.size(); i < len; i++){
+                Step step = history.get(i);
+                gameField.setStep(step);
+                switchPlayers();
+            }
         return true;
     }
+
+    private boolean hasRemoveNextStep(int k) throws GameUndoStepException {
+        if(k > gameField.getFileld()) throw new GameUndoStepException();
+        return true;
+    }
+
+    private void resetFields(){
+        gameField.resetBoard();
+    }
+
+    private void removeLastHistory(int k){
+        for(int i = 0; i < k;i++){
+             history.removeLast();
+        }
+    }
+
     public int getPrevPlayer(){
         int size = gameField.getFileld();
         if(size == 0) return 0;
         return history.get(size-1).getField();
     }
 
-    public boolean isFileldFilled() {
+    public boolean isFieldFilled() {
         return gameField.isFileldFilled();
     }
     public void print(){

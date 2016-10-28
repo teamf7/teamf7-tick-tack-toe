@@ -158,7 +158,7 @@ public class MainApp extends Application implements EventHandler<ActionEvent> {
                 refresh();
                 game.start();
             }
-            if(game.isFileldFilled()){
+            if(game.isFieldFilled()){
                 gameOver("Ничья");
                 game.undoStep(game.getHistory().size());
                 refresh();
